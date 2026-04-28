@@ -32,7 +32,9 @@
 		"build-all": "npm run build-lsp && npm run build-monaco-editor && npm run package-for-smoketest",
 		"build": "npm run build-lsp && npm run build-monaco-editor",
 		"build-monaco-editor": "ts-node ./build/build-monaco-editor",
-		"build-lsp": "cd monaco-lsp-client && npm install && npm run build"
+		"build-lsp": "cd monaco-lsp-client && npm install && npm run build",
+		"host:build": "node host/build.mjs",
+		"host:deploy": "npm run host:build && gh-pages -d host/dist"
 	},
 	"typings": "./esm/vs/editor/editor.main.d.ts",
 	"main": "./min/vs/editor/editor.main.js",
@@ -64,6 +66,7 @@
 		"esbuild": "^0.25.9",
 		"esbuild-plugin-alias": "^0.2.1",
 		"file-loader": "^6.2.0",
+		"gh-pages": "^6.3.0",
 		"glob": "^7.2.0",
 		"http-server": "^14.1.1",
 		"husky": "^7.0.4",
