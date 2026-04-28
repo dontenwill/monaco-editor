@@ -51,8 +51,7 @@ interface BeMessage {
 	language?: string;
 }
 
-window.chrome?.webview?.addEventListener('message', (event) => {
-	const data = event.data;
+function handleMessage(data: unknown): void {
 	let msg: BeMessage;
 	if (typeof data === 'string') {
 		try {
@@ -71,4 +70,7 @@ window.chrome?.webview?.addEventListener('message', (event) => {
 	monaco.editor.setModelLanguage(model, msg.language ?? 'plaintext');
 	editor.setValue(msg.code);
 	editor.setScrollPosition({ scrollTop: 0 });
-});
+}
+
+window.chrome?.webview?.addEventListener('message', (event) => handleMessage(event.data));
+window.addEventListener('message', (event) => handleMessage(event.data));
