@@ -1,5 +1,8 @@
 import * as monaco from 'monaco-editor-core';
 
+// Alle Sprach-Tokenizer (Monarch) fuer Syntax-Highlighting registrieren
+import '../src/languages/definitions/register.all';
+
 declare global {
 	interface Window {
 		MonacoEnvironment?: monaco.Environment;
