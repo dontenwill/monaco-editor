@@ -32,6 +32,7 @@ import './hcl/register';
 import './html/register';
 import './ini/register';
 import './java/register';
+import './json/register';
 import './javascript/register';
 import './julia/register';
 import './kotlin/register';
