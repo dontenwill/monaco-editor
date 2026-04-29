@@ -1,13 +1,10 @@
 name: Release Host Bundle
 
 on:
-  push:
-    tags:
-      - 'v*'
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version tag (e.g. v1.0.0). Will be created if missing.'
+        description: 'Version tag, e.g. v1.0.0. Tag is created by this workflow.'
         required: true
         type: string
 
@@ -21,14 +18,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Resolve version
+      - name: Validate + resolve version
         id: ver
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "tag=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          tag="${{ inputs.version }}"
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9.-]+)?$ ]]; then
+            echo "Invalid version '$tag' — expected vMAJOR.MINOR.PATCH[-prerelease]" >&2
+            exit 1
           fi
+          if git rev-parse "refs/tags/$tag" >/dev/null 2>&1 \
+             || git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            echo "Tag $tag already exists" >&2
+            exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
       - name: Setup Node
         uses: actions/setup-node@v6
