@@ -55,11 +55,6 @@ jobs:
           cd host/dist
           zip -r "../../monaco-host-${{ steps.ver.outputs.tag }}.zip" .
 
-      - name: SHA256 checksum
-        run: |
-          sha256sum "monaco-host-${{ steps.ver.outputs.tag }}.zip" \
-            | tee "monaco-host-${{ steps.ver.outputs.tag }}.zip.sha256"
-
       - name: Create or update Release
         uses: softprops/action-gh-release@v2
         with:
@@ -68,4 +63,3 @@ jobs:
           generate_release_notes: true
           files: |
             monaco-host-${{ steps.ver.outputs.tag }}.zip
-            monaco-host-${{ steps.ver.outputs.tag }}.zip.sha256
